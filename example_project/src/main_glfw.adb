@@ -49,13 +49,11 @@ procedure Main_Glfw is
 	-- Variables
 	Window : Glfw.Windows.T_Window;
 
-
+	Frame_No : Integer := 0;
 
 begin
 
 
-	Glfw.Hint_Platform (E_Any);
-	Glfw.Hint_Expose_Joystick_Hat_Buttons (true);
 	Glfw.Initialise;
 
 	Text_IO.Put_Line ("Platform: " & Glfw.Get_Platform'Img);
@@ -64,7 +62,15 @@ begin
 	Window.Initialise (640, 480, "Hello world!");
 	Text_IO.Put_Line ("Window initialised (post-init): " & Window.Is_Initialised'Img);
 
-	delay 1.0;
+	while not Window.Should_Close loop
+		Frame_No := Frame_No + 1;
+
+		Await_Events (1.0);
+		Text_IO.Put_Line ("(" & Frame_No'Img & ") Event detected");
+	end loop;
+
+	Window.Destroy;
+	Text_IO.Put_Line ("Window initialised (post-destroy): " & Window.Is_Initialised'Img);
 
 	Glfw.Shut_Down;
 

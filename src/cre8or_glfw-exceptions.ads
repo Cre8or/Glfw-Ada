@@ -20,7 +20,9 @@ package Cre8or_Glfw.Exceptions is
 
 
 	-- Exceptions
+	-- Custom exceptions
 	EX_ALREADY_INITIALISED   : exception;
+	EX_WINDOW_CREATION_ERROR : exception;
 
 	-- Glfw exceptions
 	EX_NOT_INITIALISED       : exception;

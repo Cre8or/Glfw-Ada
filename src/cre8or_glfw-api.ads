@@ -169,6 +169,28 @@ private package Cre8or_Glfw.API is
 	) return T_Address
 	with Import, Convention => C, External_Name => "glfwCreateWindow";
 
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwDestroyWindow (window : in T_Address)
+	with Import, Convention => C, External_Name => "glfwDestroyWindow";
+
+	---------------------------------------------------------------------------------------------------------------------
+	function glfwWindowShouldClose (window : in T_Address) return T_Boolean
+	with Import, Convention => C, External_Name => "glfwWindowShouldClose";
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Inputs
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwPollEvents
+	with Import, Convention => C, External_Name => "glfwPollEvents";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwWaitEvents
+	with Import, Convention => C, External_Name => "glfwWaitEvents";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwWaitEventsTimeout (timeout : in T_Double)
+	with Import, Convention => C, External_Name => "glfwWaitEventsTimeout";
+
 
 
 end Cre8or_Glfw.API;

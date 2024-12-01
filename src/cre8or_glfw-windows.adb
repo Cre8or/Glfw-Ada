@@ -1,3 +1,4 @@
+
 ------------------------------------------------------------------------------------------------------------------------
 --  Copyright 2024 Cre8or                                                                                             --
 --                                                                                                                    --
@@ -40,37 +41,70 @@ package body Cre8or_Glfw.Windows is
 	-----------------------------------------------------------------------------------------------------------------
 	-- T_Window
 	-----------------------------------------------------------------------------------------------------------------
-	not overriding procedure Initialise (
-		This   : in out T_Window;
-		Width  : in Positive;
-		Height : in Positive;
-		Title  : in String
-	) is
-
-		Title_C : constant T_Char_Array := To_C (Title);
-
-	begin
-
-		if This.m_Raw /= C_Null_Address then
-			raise EX_ALREADY_INITIALISED;
-		end if;
-
-		This.m_Raw := glfwCreateWindow (
-			width   => T_Int (Width),
-			height  => T_Int (Height),
-			title   => Title_C
-		);
-		Raise_Exception_On_Error;
-
-	end Initialise;
-
-	-----------------------------------------------------------------------------------------------------------------
 	not overriding function Is_Initialised (This : in T_Window) return Boolean is
 	begin
 
 		return (This.m_Raw /= C_Null_Address);
 
 	end Is_Initialised;
+
+	-----------------------------------------------------------------------------------------------------------------
+	not overriding procedure Initialise (
+		This   : in out T_Window;
+		Width  : in     Positive;
+		Height : in     Positive;
+		Title  : in     String
+	) is
+	begin
+
+		if This.m_Raw /= C_Null_Address then
+			This.Destroy;
+		end if;
+
+		This.m_Raw := glfwCreateWindow (
+			width   => T_Int (Width),
+			height  => T_Int (Height),
+			title   => To_C (Title)
+		);
+		Raise_Exception_On_Error;
+
+		if This.m_Raw = C_Null_Address then
+			raise EX_WINDOW_CREATION_ERROR;
+		end if;
+
+	end Initialise;
+
+	-----------------------------------------------------------------------------------------------------------------
+	not overriding procedure Destroy (This : in out T_Window) is
+	begin
+
+		if This.m_Raw = C_Null_Address then
+			raise EX_NOT_INITIALISED;
+		end if;
+
+		glfwDestroyWindow (This.m_Raw);
+		This.m_Raw := C_Null_Address;
+
+		Raise_Exception_On_Error;
+
+	end Destroy;
+
+	-----------------------------------------------------------------------------------------------------------------
+	not overriding function Should_Close (This : in T_Window) return Boolean is
+
+		Result : T_Boolean;
+
+	begin
+
+		if This.m_Raw = C_Null_Address then
+			raise EX_NOT_INITIALISED;
+		end if;
+
+		Result := glfwWindowShouldClose (This.m_Raw);
+
+		return (Result = E_True);
+
+	end Should_Close;
 
 	-----------------------------------------------------------------------------------------------------------------
 	not overriding function Get_Raw_Handle (This : in T_Window) return Cre8or_Raw_Window_Handle.T_Handle

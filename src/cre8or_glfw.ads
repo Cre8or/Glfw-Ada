@@ -103,6 +103,25 @@ package Cre8or_Glfw is
 	---------------------------------------------------------------------------------------------------------------------
 	function Get_Platform return T_Platform;
 
+	---------------------------------------------------------------------------------------------------------------------
+	-- Polls Glfw for any new window events. Unlike Await_Events, this procedure yields immediately.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Poll_Events;
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Polls Glfw for any new window events, and if none are detected, awaits indefinitely until new events are available.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Await_Events;
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Polls Glfw for any new window events, and if none are detected, awaits until new events are available, or until
+	-- the specified timeout is reached.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Await_Events (Timeout : in Duration);
+
 
 
 end Cre8or_Glfw;

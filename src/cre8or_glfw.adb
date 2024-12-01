@@ -26,6 +26,7 @@ pragma Elaborate (Cre8or_Glfw.Exceptions);
 
 
 
+
 package body Cre8or_Glfw is
 
 
@@ -116,6 +117,30 @@ package body Cre8or_Glfw is
 		return T_Platform'Enum_Val (Result);
 
 	end Get_Platform;
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Poll_Events is
+	begin
+
+		glfwPollEvents;
+
+	end Poll_Events;
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Await_Events is
+	begin
+
+		glfwWaitEvents;
+
+	end Await_Events;
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Await_Events (Timeout : in Duration) is
+	begin
+
+		glfwWaitEventsTimeout (T_Double (Timeout));
+
+	end Await_Events;
 
 
 
