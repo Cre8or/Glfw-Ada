@@ -18,14 +18,10 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C;
 
-with Cre8or_Glfw.Exceptions;
-
 
 
 pragma Elaborate_All (Ada.Unchecked_Conversion);
 pragma Elaborate_All (Interfaces.C);
-
-pragma Elaborate_All (Cre8or_Glfw.Exceptions);
 
 
 
@@ -35,7 +31,6 @@ separate (Cre8or_Glfw.Windows)
 not overriding function Get_Raw_Handle (This : in T_Window) return Cre8or_Raw_Window_Handle.T_Handle is
 
 	use Cre8or_Raw_Window_Handle;
-	use Cre8or_Glfw.Exceptions;
 
 	-- Instantiations
 	function Convert is new Ada.Unchecked_Conversion (T_Address, Interfaces.C.unsigned_long);
@@ -54,6 +49,10 @@ not overriding function Get_Raw_Handle (This : in T_Window) return Cre8or_Raw_Wi
 	X11_Window  : T_Address;
 
 begin
+
+	if This.m_Raw = C_Null_Address then
+		raise EX_NOT_INITIALISED;
+	end if;
 
 	X11_Display := glfwGetX11Display;
 	X11_Window  := glfwGetX11Window (This.m_Raw);

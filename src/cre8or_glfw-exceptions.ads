@@ -20,6 +20,9 @@ package Cre8or_Glfw.Exceptions is
 
 
 	-- Exceptions
+	EX_ALREADY_INITIALISED   : exception;
+
+	-- Glfw exceptions
 	EX_NOT_INITIALISED       : exception;
 	EX_NO_CURRENT_CONTEXT    : exception;
 	EX_INVALID_ENUM          : exception;

@@ -37,6 +37,8 @@ procedure Main_Glfw is
 	-- Use clauses
 	use Ada;
 
+	use Cre8or_Glfw;
+
 
 
 	-- Renames
@@ -52,12 +54,17 @@ procedure Main_Glfw is
 begin
 
 
-
+	Glfw.Hint_Platform (E_Any);
+	Glfw.Hint_Expose_Joystick_Hat_Buttons (true);
 	Glfw.Initialise;
 
-	--Window.Initialise;
+	Text_IO.Put_Line ("Platform: " & Glfw.Get_Platform'Img);
 
-	Text_IO.Put_Line ("Hello world!");
+	Text_IO.Put_Line ("Window initialised (pre-init): " & Window.Is_Initialised'Img);
+	Window.Initialise (640, 480, "Hello world!");
+	Text_IO.Put_Line ("Window initialised (post-init): " & Window.Is_Initialised'Img);
+
+	delay 1.0;
 
 	Glfw.Shut_Down;
 

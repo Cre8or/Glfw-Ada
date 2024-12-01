@@ -51,12 +51,12 @@ private package Cre8or_Glfw.API is
 	subtype T_Chars_Ptr      is Interfaces.C.Strings.chars_ptr;
 	subtype T_Char_Array_Ref is Interfaces.C.Strings.char_array_access;
 
-	type T_Result is (
+	type T_Boolean is (
 		E_False,
 		E_True
 	) with Convention => C, Size => T_Int'Size;
 
-	for T_Result use (
+	for T_Boolean use (
 		E_False => 0,
 		E_True  => 1
 	);
@@ -77,7 +77,7 @@ private package Cre8or_Glfw.API is
 		E_Feature_Unavailable,
 		E_Feature_Unimplemented,
 		E_Platform_Unavailable
-	) with Convention => C, Size => 32;
+	) with Convention => C, Size => T_Int'Size;
 
 	for T_Error use (
 		E_No_Error              => 0,
@@ -97,22 +97,22 @@ private package Cre8or_Glfw.API is
 		E_Platform_Unavailable  => 16#0001_000E#
 	);
 
-	type T_Platform is (
-		E_Any,
-		E_Win32,
-		E_Cocoa,
-		E_Wayland,
-		E_X11,
-		E_Null
-	) with Convention => C, Size => 32;
+	type T_Hint_Kind is (
+		E_Joystick_Hat_Buttons,
+		E_Platform,
+		E_Cocoa_ChDir_Resources,
+		E_Cocoa_Menubar,
+		E_X11_Xcb_Vulkan_Surface,
+		E_Wayland_LibDecor
+	) with Convention => C, Size => T_Int'Size;
 
-	for T_Platform use (
-		E_Any     => 16#0006_0000#,
-		E_Win32   => 16#0006_0001#,
-		E_Cocoa   => 16#0006_0002#,
-		E_Wayland => 16#0006_0003#,
-		E_X11     => 16#0006_0004#,
-		E_Null    => 16#0006_0005#
+	for T_Hint_Kind use (
+		E_Joystick_Hat_Buttons   => 16#0005_0001#,
+		E_Platform               => 16#0005_0003#,
+		E_Cocoa_ChDir_Resources  => 16#0005_1001#,
+		E_Cocoa_Menubar          => 16#0005_1002#,
+		E_X11_Xcb_Vulkan_Surface => 16#0005_2001#,
+		E_Wayland_LibDecor       => 16#0005_3001#
 	);
 
 
@@ -123,9 +123,26 @@ private package Cre8or_Glfw.API is
 
 
 
+	-- Renames
+	function To_C (
+		Item       : in String;
+		Append_Nul : in Boolean := True
+	) return T_Char_Array renames Interfaces.C.To_C;
+
+
+
+
 	-- Imports
 	---------------------------------------------------------------------------------------------------------------------
-	function glfwInit return T_Result
+	-- Context / hints
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwInitHint (
+		hint :  in T_Hint_Kind;
+		value : in T_Int
+	) with Import, Convention => C, External_Name => "glfwInitHint";
+
+	---------------------------------------------------------------------------------------------------------------------
+	function glfwInit return T_Boolean
 	with Import, Convention => C, External_Name => "glfwInit";
 
 	---------------------------------------------------------------------------------------------------------------------
@@ -137,8 +154,20 @@ private package Cre8or_Glfw.API is
 	with Import, Convention => C, External_Name => "glfwGetError";
 
 	---------------------------------------------------------------------------------------------------------------------
-	function glfwGetPlatform return T_Platform
+	function glfwGetPlatform return T_Int
 	with Import, Convention => C, External_Name => "glfwGetPlatform";
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Windows
+	---------------------------------------------------------------------------------------------------------------------
+	function glfwCreateWindow (
+		width   : in T_Int;
+		height  : in T_Int;
+		title   : in T_Char_Array;
+		monitor : in T_Address := C_Null_Address;
+		share   : in T_Address := C_Null_Address
+	) return T_Address
+	with Import, Convention => C, External_Name => "glfwCreateWindow";
 
 
 

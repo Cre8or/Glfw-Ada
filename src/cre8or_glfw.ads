@@ -19,20 +19,89 @@ package Cre8or_Glfw is
 
 
 
+	-- Types
+	type T_Platform is (
+		E_Any,
+		E_Win32,
+		E_Cocoa,
+		E_Wayland,
+		E_X11,
+		E_Null
+	) with Convention => C, Size => 32;
+
+	for T_Platform use (
+		E_Any     => 16#0006_0000#,
+		E_Win32   => 16#0006_0001#,
+		E_Cocoa   => 16#0006_0002#,
+		E_Wayland => 16#0006_0003#,
+		E_X11     => 16#0006_0004#,
+		E_Null    => 16#0006_0005#
+	);
+
+
+
 	-- Specifications
+	---------------------------------------------------------------------------------------------------------------------
+	-- Sends a hint to Glfw to use the specified platform. Must be submitted before calling Initialise.
+	--
+	-- Hints are reset after a call to Shut_Down and must be resubmitted before the next call to Initialise.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Platform (Platform : in T_Platform);
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Sets whether Glfw should expose joystick hats as buttons, for compatibility with earlier versions that did not
+	-- have glfwGetJoystickHats.
+	--
+	-- Hints are reset after a call to Shut_Down and must be resubmitted before the next call to Initialise.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Expose_Joystick_Hat_Buttons (Enabled : in Boolean);
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Sets whether Glfw should create the menu bar and dock icon when initialised. This hint is only considered when
+	-- using the Cocoa platform.
+	--
+	-- Hints are reset after a call to Shut_Down and must be resubmitted before the next call to Initialise.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Cocoa_Menu_Bar (Enabled : in Boolean);
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Sets whether Glfw should set the current directory to the application to the Contents/Resources subdirectory of
+	-- the application's bundle, if present. This hint is only considered when using the Cocoa platform.
+	--
+	-- Hints are reset after a call to Shut_Down and must be resubmitted before the next call to Initialise.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Cocoa_Change_Dir_Resources (Change_Dir : in Boolean);
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Sets whether Glfw should use the VK_KHR_xcb_surface or the VK_KHR_xlib_surface extension for creating Vulkan
+	-- surfaces. This hint is only considered when using the X11 platform.
+	--
+	-- Hints are reset after a call to Shut_Down and must be resubmitted before the next call to Initialise.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_X11_Xcb_Vulkan_Surface (Use_Xcb : in Boolean);
+
 	---------------------------------------------------------------------------------------------------------------------
 	-- Initialises Glfw. Should be called once upon application startup.
 	-- Must only be called from the main task.
 	---------------------------------------------------------------------------------------------------------------------
-	procedure Initialise
-	with Inline;
+	procedure Initialise;
 
 	---------------------------------------------------------------------------------------------------------------------
 	-- Shuts down (terminates) Glfw. Should be called once at the end of the application.
 	-- Must only be called from the main task.
 	---------------------------------------------------------------------------------------------------------------------
-	procedure Shut_Down
-	with Inline;
+	procedure Shut_Down;
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Returns the platform that was selected during initialisation.
+	-- If Glfw isn't initialised, raises the exception EX_NOT_INITIALISED.
+	---------------------------------------------------------------------------------------------------------------------
+	function Get_Platform return T_Platform;
 
 
 

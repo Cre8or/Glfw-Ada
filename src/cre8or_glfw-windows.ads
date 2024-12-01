@@ -46,8 +46,25 @@ package Cre8or_Glfw.Windows is
 
 		-- Primitives
 		-----------------------------------------------------------------------------------------------------------------
+		-- Creates a window and its associated context. The latter can be configured with context hints before window
+		-- initialisation.
+		-----------------------------------------------------------------------------------------------------------------
+		not overriding procedure Initialise (
+			This   : in out T_Window;
+			Width  : in Positive;
+			Height : in Positive;
+			Title  : in String
+		);
+
+		-----------------------------------------------------------------------------------------------------------------
+		-- Returns true if the window has been initialised, otherwise false.
+		-----------------------------------------------------------------------------------------------------------------
+		not overriding function Is_Initialised (This : in T_Window) return Boolean;
+
+		-----------------------------------------------------------------------------------------------------------------
 		-- Converts the internal Glfw window handle into a platform-specific raw window handle for interfacing with other
 		-- libraries.
+		-- The window must be initialised.
 		-----------------------------------------------------------------------------------------------------------------
 		not overriding function Get_Raw_Handle (This : in T_Window) return Cre8or_Raw_Window_Handle.T_Handle;
 

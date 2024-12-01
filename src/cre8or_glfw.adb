@@ -38,9 +38,54 @@ package body Cre8or_Glfw is
 
 	-- Bodies
 	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Platform (Platform : in T_Platform) is
+	begin
+
+		glfwInitHint (E_Platform, T_Platform'Enum_Rep (Platform));
+		Raise_Exception_On_Error;
+
+	end Hint_Platform;
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Expose_Joystick_Hat_Buttons (Enabled : in Boolean) is
+	begin
+
+		glfwInitHint (E_Joystick_Hat_Buttons, (if Enabled then 1 else 0));
+		Raise_Exception_On_Error;
+
+	end Hint_Expose_Joystick_Hat_Buttons;
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Cocoa_Menu_Bar (Enabled : in Boolean) is
+	begin
+
+		glfwInitHint (E_Cocoa_Menubar, (if Enabled then 1 else 0));
+		Raise_Exception_On_Error;
+
+	end Hint_Cocoa_Menu_Bar;
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Cocoa_Change_Dir_Resources (Change_Dir : in Boolean) is
+	begin
+
+		glfwInitHint (E_Cocoa_ChDir_Resources, (if Change_Dir then 1 else 0));
+		Raise_Exception_On_Error;
+
+	end Hint_Cocoa_Change_Dir_Resources;
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_X11_Xcb_Vulkan_Surface (Use_Xcb : in Boolean) is
+	begin
+
+		glfwInitHint (E_X11_Xcb_Vulkan_Surface, (if Use_Xcb then 1 else 0));
+		Raise_Exception_On_Error;
+
+	end Hint_X11_Xcb_Vulkan_Surface;
+
+	---------------------------------------------------------------------------------------------------------------------
 	procedure Initialise is
 
-		Dummy : T_Result;
+		Dummy : T_Boolean;
 
 	begin
 
@@ -57,6 +102,20 @@ package body Cre8or_Glfw is
 		Raise_Exception_On_Error;
 
 	end Shut_Down;
+
+	---------------------------------------------------------------------------------------------------------------------
+	function Get_Platform return T_Platform is
+
+		Result : T_Int;
+
+	begin
+
+		Result := glfwGetPlatform;
+		Raise_Exception_On_Error;
+
+		return T_Platform'Enum_Val (Result);
+
+	end Get_Platform;
 
 
 
