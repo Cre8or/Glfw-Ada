@@ -1,0 +1,30 @@
+# File extensions
+*.stderr
+*.stdout
+*.lexch
+*.bexch
+*.ali
+*.cswi
+*.a
+*.o
+*.d
+*.db
+*.db-shm
+*.db-wal
+*.cgpr
+*.exe
+*.log
+*.rpt
+*.directory
+*.clang-format
+
+# Library
+obj/*
+lib/*
+
+# Alire
+alire/*
+config/*
+
+# Example project
+example_project/obj/*

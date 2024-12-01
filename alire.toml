@@ -1,0 +1,13 @@
+name = "cre8or_glfw"
+description = "Glfw binding for Ada"
+version = "0.1.0-dev"
+
+authors = ["Cre8or"]
+maintainers = ["Cre8or <cre8or@tuta.io>"]
+maintainers-logins = ["Cre8or"]
+licenses = "Apache-2.0"
+website = "https://github.com/Cre8or/Glfw-Ada"
+tags = ["cre8or", "glfw", "binding", "gamedev", "graphics", "rendering", "windowing", "windows", "linux"]
+
+[configuration]
+disabled = true

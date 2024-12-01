@@ -1,0 +1,62 @@
+with "../Raw_Window_Handle/cre8or_raw_window_handle.gpr";
+
+
+
+
+
+library project Cre8or_Glfw is
+
+
+
+	for Create_Missing_Dirs use "True";
+	for Languages use ("Ada");
+	for Library_Name use "Cre8or_Glfw";
+	for Object_Dir use "obj";
+	for Library_Dir use "lib";
+	for Library_Kind use "Static";
+
+
+
+	-- Configuration
+	type T_Windowing_System is ("win32", "cocoa", "x11", "wayland");
+	Windowing_System : T_Windowing_System := external ("Cre8or_Glfw_Windowing_System", "x11");
+
+	Glfw_Linker_Param := "";
+	case Windowing_System is
+		when "win32"                     => Glfw_Linker_Param := "-lglfw3";
+		when "x11" | "cocoa" | "wayland" => Glfw_Linker_Param := "-lglfw";
+	end case;
+
+	All_Source_Dirs := ("src", "src/" & Windowing_System);
+	for Source_Dirs use All_Source_Dirs;
+
+
+
+	-- Switches
+	Switch_Warnings_As_Errors := "";
+	--Switch_Warnings_As_Errors := "-gnatwe"; -- DEBUG
+
+	package Compiler is
+		for Default_Switches ("ada") use ("-gnat12", "-gnatwa", "-gnatwl", Switch_Warnings_As_Errors, "-gnatwV", "-gnatwJ", "-fstack-check", "-gnaty3abcefhiklmNprt", "-E");
+	end Compiler;
+
+	package Linker is
+		case Windowing_System is
+			when "win32" =>
+				for Linker_Options use (Glfw_Linker_Param, "-lwinmm", "-lgdi32");
+			when "cocoa" =>
+				for Linker_Options use (Glfw_Linker_Param, "-Wl,-framework,Cocoa,-framework,IOKit");
+			when "x11" =>
+				for Linker_Options use (Glfw_Linker_Param, "-lX11", "-pthread", "-lm", "-lXcursor", "-lXxf86vm", "-lXrandr", "-lXinerama", "-lXi", "-ldl");
+			when "wayland" =>
+				for Linker_Options use (Glfw_Linker_Param, "-pthread", "-lm", "-ldl");
+		end case;
+	end Linker;
+
+	package Binder is
+		for Default_Switches ("ada") use ("-s", "-Es");
+	end Binder;
+
+
+
+end Cre8or_Glfw;
