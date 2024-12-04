@@ -28,7 +28,7 @@ pragma Elaborate_All (Interfaces.C);
 
 
 separate (Cre8or_Glfw.Windows)
-not overriding function Get_Raw_Handle (This : in T_Window) return Cre8or_Raw_Window_Handle.T_Handle is
+not overriding function Get_Raw_Handle (This : in out T_Window) return Cre8or_Raw_Window_Handle.T_Handle is
 
 	use Cre8or_Raw_Window_Handle;
 

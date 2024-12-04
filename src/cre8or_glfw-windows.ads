@@ -33,14 +33,6 @@ package Cre8or_Glfw.Windows is
 
 
 
-	-- Pragmas (validation)
---	pragma Compile_Time_Error (
---		T_Integer32'Size /= 32,
---		"Actual for T_Integer32 must be a 32 bit integer type"
---	);
-
-
-
 	-- Types
 	type T_Window is tagged private;
 
@@ -80,7 +72,7 @@ package Cre8or_Glfw.Windows is
 		-- libraries.
 		-- The window must be initialised.
 		-----------------------------------------------------------------------------------------------------------------
-		not overriding function Get_Raw_Handle (This : in T_Window) return Cre8or_Raw_Window_Handle.T_Handle;
+		not overriding function Get_Raw_Handle (This : in out T_Window) return Cre8or_Raw_Window_Handle.T_Handle;
 
 
 

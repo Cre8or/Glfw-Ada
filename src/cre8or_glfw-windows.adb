@@ -107,7 +107,7 @@ package body Cre8or_Glfw.Windows is
 	end Should_Close;
 
 	-----------------------------------------------------------------------------------------------------------------
-	not overriding function Get_Raw_Handle (This : in T_Window) return Cre8or_Raw_Window_Handle.T_Handle
+	not overriding function Get_Raw_Handle (This : in out T_Window) return Cre8or_Raw_Window_Handle.T_Handle
 	is separate;
 
 
