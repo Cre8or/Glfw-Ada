@@ -1,4 +1,9 @@
-with "../Raw_Window_Handle/cre8or_raw_window_handle.gpr";
+-- TODO: Find out how to make this work locally!
+-- For now I'm using symbolic links inside the alire folder.
+-- There has to be a better way...
+
+--with "cre8or_raw_window_handle.gpr";
+with "alire/cre8or_raw_window_handle/cre8or_raw_window_handle.gpr";
 
 
 

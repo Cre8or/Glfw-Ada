@@ -11,3 +11,6 @@ tags = ["cre8or", "glfw", "example", "gamedev", "graphics", "rendering", "window
 
 [configuration]
 disabled = true
+
+[[depends-on]]
+cre8or_glfw = "*"
