@@ -15,16 +15,6 @@
 
 
 
-with Interfaces.C;
-
-
-
-pragma Elaborate_All (Interfaces.C);
-
-
-
-
-
 separate (Cre8or_Glfw.Windows)
 not overriding function Get_Raw_Handle (This : in out T_Window) return Cre8or_Raw_Window_Handle.T_Handle is
 
@@ -32,16 +22,16 @@ not overriding function Get_Raw_Handle (This : in out T_Window) return Cre8or_Ra
 
 	-- Imports
 	---------------------------------------------------------------------------------------------------------------------
-	function glfwGetX11Window (GLFWwindow : in T_Address) return Interfaces.C.unsigned_long
-	with Import, Convention => C, External_Name => "glfwGetX11Window";
+	function glfwGetWin32Window (GLFWwindow : in T_Address) return T_Address
+	with Import, Convention => C, External_Name => "glfwGetWin32Window";
 
 	---------------------------------------------------------------------------------------------------------------------
-	function glfwGetX11Display return T_Address
-	with Import, Convention => C, External_Name => "glfwGetX11Display";
+	function GetModuleHandleA (lpModuleName : in T_Address) return T_Address
+	with Import, Convention => C, External_Name => "GetModuleHandleA";
 
 	-- Variables
-	X11_Display : T_Address;
-	X11_Window  : Interfaces.C.unsigned_long;
+	Win32_Window   : T_Address;
+	Win32_Instance : T_Address;
 
 begin
 
@@ -49,16 +39,15 @@ begin
 		raise EX_NOT_INITIALISED;
 	end if;
 
-	X11_Display := glfwGetX11Display;
-	X11_Window  := glfwGetX11Window (This.m_Raw);
+	Win32_Window   := glfwGetWin32Window (This.m_Raw);
+	Win32_Instance := GetModuleHandleA (C_Null_Address);
 
 	Raise_Exception_On_Error;
 
 	return (
-		Kind         => E_Xlib,
-		xlib_display => X11_Display,
-		xlib_window  => X11_Window,
-		others       => <>
+		Kind            => E_Win32,
+		win32_hwnd      => Win32_Window,
+		win32_hinstance => Win32_Instance
 	);
 
 end Get_Raw_Handle;

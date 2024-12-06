@@ -15,7 +15,7 @@
 
 
 
-package Cre8or_Glfw is
+package Cre8or_Glfw.Context is
 
 
 
@@ -124,4 +124,4 @@ package Cre8or_Glfw is
 
 
 
-end Cre8or_Glfw;
+end Cre8or_Glfw.Context;

@@ -2,7 +2,11 @@ with "../cre8or_glfw.gpr";
 
 
 
+
+
 project Cre8or_Glfw_Example is
+
+
 
 	for Create_Missing_Dirs use "True";
 	for Source_Dirs use ("src/**");
@@ -26,5 +30,7 @@ project Cre8or_Glfw_Example is
 	package Binder is
 		for Switches ("ada") use ("-Es");
 	end Binder;
+
+
 
 end Cre8or_Glfw_Example;

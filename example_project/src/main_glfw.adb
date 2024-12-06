@@ -17,14 +17,14 @@
 
 with Ada.Text_IO;
 
-with Cre8or_Glfw;
+with Cre8or_Glfw.Context;
 with Cre8or_Glfw.Windows;
 
 
 
 pragma Elaborate_All (Ada.Text_IO);
 
-pragma Elaborate_All (Cre8or_Glfw);
+pragma Elaborate_All (Cre8or_Glfw.Context);
 pragma Elaborate_All (Cre8or_Glfw.Windows);
 
 
@@ -37,7 +37,7 @@ procedure Main_Glfw is
 	-- Use clauses
 	use Ada;
 
-	use Cre8or_Glfw;
+	use Cre8or_Glfw.Context;
 
 
 
@@ -54,9 +54,10 @@ procedure Main_Glfw is
 begin
 
 
-	Glfw.Initialise;
 
-	Text_IO.Put_Line ("Platform: " & Glfw.Get_Platform'Img);
+	Initialise;
+
+	Text_IO.Put_Line ("Platform: " & Get_Platform'Img);
 
 	Text_IO.Put_Line ("Window initialised (pre-init): " & Window.Is_Initialised'Img);
 	Window.Initialise (640, 480, "Hello world!");
@@ -72,7 +73,7 @@ begin
 	Window.Destroy;
 	Text_IO.Put_Line ("Window initialised (post-destroy): " & Window.Is_Initialised'Img);
 
-	Glfw.Shut_Down;
+	Shut_Down;
 
 
 

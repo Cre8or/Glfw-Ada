@@ -20,14 +20,14 @@ with Cre8or_Glfw.Exceptions;
 
 
 
-pragma Elaborate (Cre8or_Glfw.API);
-pragma Elaborate (Cre8or_Glfw.Exceptions);
+pragma Elaborate_All (Cre8or_Glfw.API);
+pragma Elaborate_All (Cre8or_Glfw.Exceptions);
 
 
 
 
 
-package body Cre8or_Glfw is
+package body Cre8or_Glfw.Context is
 
 
 
@@ -144,4 +144,4 @@ package body Cre8or_Glfw is
 
 
 
-end Cre8or_Glfw;
+end Cre8or_Glfw.Context;
