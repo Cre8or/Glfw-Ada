@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------------------------------------------------
---  Copyright 2024 Cre8or                                                                                             --
+--  Copyright 2024-2025 Cre8or                                                                                        --
 --                                                                                                                    --
 --  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance    --
 --  with the License. You may obtain a copy of the License at                                                         --
@@ -43,6 +43,8 @@ private package Cre8or_Glfw.API is
 
 	type T_Float  is new Interfaces.C.C_float;
 	type T_Double is new Interfaces.C.double;
+
+	type T_Int32 is range -2**32 .. 2**32 - 1;
 
 	type T_Size       is new Interfaces.C.size_t;
 	subtype T_Address is System.Address;
@@ -97,7 +99,7 @@ private package Cre8or_Glfw.API is
 		E_Platform_Unavailable  => 16#0001_000E#
 	);
 
-	type T_Hint_Kind is (
+	type T_Initialisation_Hint is (
 		E_Joystick_Hat_Buttons,
 		E_Platform,
 		E_Cocoa_ChDir_Resources,
@@ -106,7 +108,7 @@ private package Cre8or_Glfw.API is
 		E_Wayland_LibDecor
 	) with Convention => C, Size => T_Int'Size;
 
-	for T_Hint_Kind use (
+	for T_Initialisation_Hint use (
 		E_Joystick_Hat_Buttons   => 16#0005_0001#,
 		E_Platform               => 16#0005_0003#,
 		E_Cocoa_ChDir_Resources  => 16#0005_1001#,
@@ -115,11 +117,123 @@ private package Cre8or_Glfw.API is
 		E_Wayland_LibDecor       => 16#0005_3001#
 	);
 
+	type T_Window_Hint is (
+		E_Focused,
+		E_Iconified,
+		E_Resizable,
+		E_Visible,
+		E_Decorated,
+		E_Auto_Iconify,
+		E_Floating,
+		E_Maximised,
+		E_Center_Cursor,
+		E_Transparent_Frame_Buffer,
+		E_Hovered,
+		E_Focus_On_Show,
+		E_Mouse_Passthrough,
+		E_Position_X,
+		E_Position_Y,
+		E_Red_Bits,
+		E_Green_Bits,
+		E_Blue_Bits,
+		E_Alpha_Bits,
+		E_Depth_Bits,
+		E_Stencil_Bits,
+		E_Accum_Red_Bits,
+		E_Accum_Green_Bits,
+		E_Accum_Blue_Bits,
+		E_Accum_Alpha_Bits,
+		E_Aux_Buffers,
+		E_Stereo,
+		E_Samples,
+		E_SRGB_Capable,
+		E_Refresh_Rate,
+		E_Double_Buffer,
+		E_Client_API,
+		E_Context_Version_Major,
+		E_Context_Version_Minor,
+		E_Context_Revision,
+		E_Context_Robustness,
+		E_OpenGL_Forward_Compat,
+		E_Context_Debug,
+		E_OpenGL_Profile,
+		E_Context_Release_Behaviour,
+		E_Context_No_Error,
+		E_Context_Creation_API,
+		E_Scale_To_Monitor,
+		E_Scale_Frame_Buffer,
+		E_Cocoa_Retina_Frame_Buffer,
+		E_Cocoa_Frame_Name,
+		E_Cocoa_Graphics_Switching,
+		E_X11_Class_Name,
+		E_X11_Instance_Name,
+		E_Win32_Keyboard_Menu,
+		E_Win32_Show_Default,
+		E_Wayland_App_ID
+	) with Convention => C, Size => T_Int'Size;
+
+	for T_Window_Hint use (
+		E_Focused                   => 16#0002_0001#,
+		E_Iconified                 => 16#0002_0002#,
+		E_Resizable                 => 16#0002_0003#,
+		E_Visible                   => 16#0002_0004#,
+		E_Decorated                 => 16#0002_0005#,
+		E_Auto_Iconify              => 16#0002_0006#,
+		E_Floating                  => 16#0002_0007#,
+		E_Maximised                 => 16#0002_0008#,
+		E_Center_Cursor             => 16#0002_0009#,
+		E_Transparent_Frame_Buffer  => 16#0002_000A#,
+		E_Hovered                   => 16#0002_000B#,
+		E_Focus_On_Show             => 16#0002_000C#,
+		E_Mouse_Passthrough         => 16#0002_000D#,
+		E_Position_X                => 16#0002_000E#,
+		E_Position_Y                => 16#0002_000F#,
+		E_Red_Bits                  => 16#0002_1001#,
+		E_Green_Bits                => 16#0002_1002#,
+		E_Blue_Bits                 => 16#0002_1003#,
+		E_Alpha_Bits                => 16#0002_1004#,
+		E_Depth_Bits                => 16#0002_1005#,
+		E_Stencil_Bits              => 16#0002_1006#,
+		E_Accum_Red_Bits            => 16#0002_1007#,
+		E_Accum_Green_Bits          => 16#0002_1008#,
+		E_Accum_Blue_Bits           => 16#0002_1009#,
+		E_Accum_Alpha_Bits          => 16#0002_100A#,
+		E_Aux_Buffers               => 16#0002_100B#,
+		E_Stereo                    => 16#0002_100C#,
+		E_Samples                   => 16#0002_100D#,
+		E_SRGB_Capable              => 16#0002_100E#,
+		E_Refresh_Rate              => 16#0002_100F#,
+		E_Double_Buffer             => 16#0002_1010#,
+		E_Client_API                => 16#0002_2001#,
+		E_Context_Version_Major     => 16#0002_2002#,
+		E_Context_Version_Minor     => 16#0002_2003#,
+		E_Context_Revision          => 16#0002_2004#,
+		E_Context_Robustness        => 16#0002_2005#,
+		E_OpenGL_Forward_Compat     => 16#0002_2006#,
+		E_Context_Debug             => 16#0002_2007#,
+		E_OpenGL_Profile            => 16#0002_2008#,
+		E_Context_Release_Behaviour => 16#0002_2009#,
+		E_Context_No_Error          => 16#0002_200A#,
+		E_Context_Creation_API      => 16#0002_200B#,
+		E_Scale_To_Monitor          => 16#0002_200C#,
+		E_Scale_Frame_Buffer        => 16#0002_200D#,
+		E_Cocoa_Retina_Frame_Buffer => 16#0002_3001#,
+		E_Cocoa_Frame_Name          => 16#0002_3002#,
+		E_Cocoa_Graphics_Switching  => 16#0002_3003#,
+		E_X11_Class_Name            => 16#0002_4001#,
+		E_X11_Instance_Name         => 16#0002_4002#,
+		E_Win32_Keyboard_Menu       => 16#0002_5001#,
+		E_Win32_Show_Default        => 16#0002_5002#,
+		E_Wayland_App_ID            => 16#0002_6001#
+	);
+
 
 
 	-- Constants
 	C_Null_Address   : T_Address renames System.Null_Address;
 	C_Null_Chars_Ptr : T_Chars_Ptr renames Interfaces.C.Strings.Null_Ptr;
+
+	C_Any_Position : constant T_Int32 := 16#8000_0000#; -- GLFW_ANY_POSITION
 
 
 
@@ -131,13 +245,12 @@ private package Cre8or_Glfw.API is
 
 
 
-
 	-- Imports
 	---------------------------------------------------------------------------------------------------------------------
-	-- Context / hints
+	-- Context
 	---------------------------------------------------------------------------------------------------------------------
 	procedure glfwInitHint (
-		hint :  in T_Hint_Kind;
+		hint :  in T_Initialisation_Hint;
 		value : in T_Int
 	) with Import, Convention => C, External_Name => "glfwInitHint";
 
@@ -176,6 +289,32 @@ private package Cre8or_Glfw.API is
 	---------------------------------------------------------------------------------------------------------------------
 	function glfwWindowShouldClose (window : in T_Address) return T_Boolean
 	with Import, Convention => C, External_Name => "glfwWindowShouldClose";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwShowWindow (window : in T_Address)
+	with Import, Convention => C, External_Name => "glfwShowWindow";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwHideWindow (window : in T_Address)
+	with Import, Convention => C, External_Name => "glfwHideWindow";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwRequestWindowAttention (window : in T_Address)
+	with Import, Convention => C, External_Name => "glfwRequestWindowAttention";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwFocusWindow (window : in T_Address)
+	with Import, Convention => C, External_Name => "glfwFocusWindow";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwWindowHint (
+		hint  : in T_Window_Hint;
+		value : in T_Int32
+	) with Import, Convention => C, External_Name => "glfwWindowHint";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwDefaultWindowHints
+	with Import, Convention => C, External_Name => "glfwDefaultWindowHints";
 
 	---------------------------------------------------------------------------------------------------------------------
 	-- Inputs

@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------------------------------------------------
---  Copyright 2024 Cre8or                                                                                             --
+--  Copyright 2024-2025 Cre8or                                                                                        --
 --                                                                                                                    --
 --  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance    --
 --  with the License. You may obtain a copy of the License at                                                         --
@@ -28,15 +28,6 @@ package Cre8or_Glfw.Context is
 		E_X11,
 		E_Null
 	) with Convention => C, Size => 32;
-
-	for T_Platform use (
-		E_Any     => 16#0006_0000#,
-		E_Win32   => 16#0006_0001#,
-		E_Cocoa   => 16#0006_0002#,
-		E_Wayland => 16#0006_0003#,
-		E_X11     => 16#0006_0004#,
-		E_Null    => 16#0006_0005#
-	);
 
 
 
@@ -121,6 +112,22 @@ package Cre8or_Glfw.Context is
 	-- Must only be called from the main task.
 	---------------------------------------------------------------------------------------------------------------------
 	procedure Await_Events (Timeout : in Duration);
+
+
+
+private
+
+
+
+	-- Types
+	for T_Platform use (
+		E_Any     => 16#0006_0000#,
+		E_Win32   => 16#0006_0001#,
+		E_Cocoa   => 16#0006_0002#,
+		E_Wayland => 16#0006_0003#,
+		E_X11     => 16#0006_0004#,
+		E_Null    => 16#0006_0005#
+	);
 
 
 
