@@ -28,7 +28,7 @@ project Cre8or_Glfw_Example is
 	end Compiler;
 
 	package Binder is
-		for Switches ("ada") use ("-Es");
+		for Switches ("ada") use ("-Es", "-E");
 	end Binder;
 
 

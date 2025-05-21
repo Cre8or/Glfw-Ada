@@ -36,6 +36,18 @@ package Cre8or_Glfw.Windows is
 	-- Types
 	subtype T_Natural is Natural;
 
+	type T_Client_API is (
+		E_No_API,
+		E_OpenGL,
+		E_OpenGL_ES
+	);
+
+	type T_Context_Creation_API is (
+		E_Native_Context,
+		E_EGL_Context,
+		E_OSMesa_Context
+	);
+
 	type T_Window is tagged private;
 
 		-- Primitives
@@ -81,7 +93,7 @@ package Cre8or_Glfw.Windows is
 		-- The window must be initialised.
 		-- Must only be called from the main task.
 		-----------------------------------------------------------------------------------------------------------------
-		not overriding procedure Show (This : in T_Window);
+		not overriding procedure Show (This : in out T_Window);
 
 		-----------------------------------------------------------------------------------------------------------------
 		-- Hides the specified window after it was previously visible, including from the task bar, dock, and window list.
@@ -89,7 +101,7 @@ package Cre8or_Glfw.Windows is
 		-- The window must be initialised.
 		-- Must only be called from the main task.
 		-----------------------------------------------------------------------------------------------------------------
-		not overriding procedure Hide (This : in T_Window);
+		not overriding procedure Hide (This : in out T_Window);
 
 		-----------------------------------------------------------------------------------------------------------------
 		-- Sets the specified window to request user attention (e.g. by flashing on the task bar).
@@ -97,7 +109,7 @@ package Cre8or_Glfw.Windows is
 		-- The window must be initialised.
 		-- Must only be called from the main task.
 		-----------------------------------------------------------------------------------------------------------------
-		not overriding procedure Request_Attention (This : in T_Window);
+		not overriding procedure Request_Attention (This : in out T_Window);
 
 		-----------------------------------------------------------------------------------------------------------------
 		-- Brings the specified window to the front and sets input focus onto it.
@@ -107,13 +119,25 @@ package Cre8or_Glfw.Windows is
 		-- The window must be initialised.
 		-- Must only be called from the main task.
 		-----------------------------------------------------------------------------------------------------------------
-		not overriding procedure Focus (This : in T_Window);
+		not overriding procedure Focus (This : in out T_Window);
+
+		-----------------------------------------------------------------------------------------------------------------
+		-- TODO
+		-----------------------------------------------------------------------------------------------------------------
+		not overriding procedure Make_Context_Current (This : in out T_Window);
+
+		-----------------------------------------------------------------------------------------------------------------
+		-- Swaps the front abd back buffers of the specified window when rendering with OpenGL or OpenGL ES.
+		-- NOTE: This function does not apply to Vulkan (see vkQueuePresentKHR instead).
+		-- The window must be initialised.
+		-----------------------------------------------------------------------------------------------------------------
+		not overriding procedure Swap_Buffers (This : in out T_Window);
 
 
 
 	-- Specifications
 	-----------------------------------------------------------------------------------------------------------------
-	-- The following hint procedures set hints for the next call to Initialise.
+	-- The following hint procedures set hints for the next call to T_Window.Initialise.
 	-- The hints, once set, persist until they are changed, or until the Glfw context is shut down.
 	-- All hint procedures must only be called from the main task.
 	-----------------------------------------------------------------------------------------------------------------
@@ -209,6 +233,19 @@ package Cre8or_Glfw.Windows is
 	-- preferences.
 	-----------------------------------------------------------------------------------------------------------------
 	procedure Hint_Any_Position;
+
+	-----------------------------------------------------------------------------------------------------------------
+	-- Specifies for which client API the the window should create a context. This is a hard constraint.
+	-- Each window may only use one context.
+	-- The context creation request can be disabled by using E_No_API as the client API.
+	-----------------------------------------------------------------------------------------------------------------
+	procedure Hint_Client_API (API : in T_Client_API);
+
+	-----------------------------------------------------------------------------------------------------------------
+	-- Specifies which API should be used to create the context. This is a hard constraint.
+	-- If no context is requested for this window, this hint is ignored.
+	-----------------------------------------------------------------------------------------------------------------
+	procedure Hint_Context_Creation_API (API : in T_Context_Creation_API);
 
 	-----------------------------------------------------------------------------------------------------------------
 	-- Resets all window hints to their default values.

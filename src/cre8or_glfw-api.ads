@@ -235,6 +235,14 @@ private package Cre8or_Glfw.API is
 
 	C_Any_Position : constant T_Int32 := 16#8000_0000#; -- GLFW_ANY_POSITION
 
+	C_No_API        : constant T_Int32 := 0;             -- GLFW_NO_API
+	C_OpenGL_API    : constant T_Int32 := 16#0003_0001#; -- GLFW_OPENGL_API
+	C_OpenGL_ES_API : constant T_Int32 := 16#0003_0002#; -- GLFW_OPENGL_ES_API
+
+	C_Native_Context_API : constant T_Int32 := 16#0003_6001#; -- GLFW_NATIVE_CONTEXT_API
+	C_EGL_Context_API    : constant T_Int32 := 16#0003_6002#; -- GLFW_EGL_CONTEXT_API
+	C_OSMesa_Context_API : constant T_Int32 := 16#0003_6003#; -- GLFW_OSMESA_CONTEXT_API
+
 
 
 	-- Renames
@@ -315,6 +323,18 @@ private package Cre8or_Glfw.API is
 	---------------------------------------------------------------------------------------------------------------------
 	procedure glfwDefaultWindowHints
 	with Import, Convention => C, External_Name => "glfwDefaultWindowHints";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwSwapBuffers (window : in T_Address)
+	with Import, Convention => C, External_Name => "glfwSwapBuffers";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwSwapInterval (interval : in T_Int)
+	with Import, Convention => C, External_Name => "glfwSwapInterval";
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure glfwMakeContextCurrent (window : in T_Address)
+	with Import, Convention => C, External_Name => "glfwMakeContextCurrent";
 
 	---------------------------------------------------------------------------------------------------------------------
 	-- Inputs

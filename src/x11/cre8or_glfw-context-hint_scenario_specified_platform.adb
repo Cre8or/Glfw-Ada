@@ -15,77 +15,10 @@
 
 
 
-with Ada.Text_IO;
-
-with Cre8or_Glfw.Context;
-with Cre8or_Glfw.Windows;
-
-
-
-pragma Elaborate_All (Ada.Text_IO);
-
-pragma Elaborate_All (Cre8or_Glfw.Context);
-pragma Elaborate_All (Cre8or_Glfw.Windows);
-
-
-
-
-
-procedure Main_Glfw is
-
-
-
-	-- Use clauses
-	use Ada;
-
-	use Cre8or_Glfw;
-
-
-
-	-- Renames
-	package Glfw renames Cre8or_Glfw;
-
-
-
-	-- Variables
-	Window : Glfw.Windows.T_Window;
-
-	Frame_No : Integer := 0;
-
-
-
+separate (Cre8or_Glfw.Context)
+procedure Hint_Scenario_Specified_Platform is
 begin
 
+	Hint_Platform (E_X11);
 
-
-	Context.Hint_Scenario_Specified_Platform;
-	Context.Initialise;
-
-	Text_IO.Put_Line ("Platform: " & Context.Get_Platform'Img);
-	Text_IO.Put_Line ("Window initialised (pre-init): " & Window.Is_Initialised'Img);
-
-	Windows.Hint_Client_API (Windows.E_OpenGL);
-	Windows.Hint_Context_Creation_API (Windows.E_Native_Context);
-
-	Window.Initialise (640, 480, "Hello world!");
-	Text_IO.Put_Line ("Window initialised (post-init): " & Window.Is_Initialised'Img);
-
-	Window.Make_Context_Current;
-	Context.Set_Swap_Interval (1); -- Enables VSync
-
-	while not Window.Should_Close loop
-		Frame_No := Frame_No + 1;
-
-		Context.Await_Events (1.0);
-		Window.Swap_Buffers;
-		Text_IO.Put_Line ("(" & Frame_No'Img & ") Event detected");
-	end loop;
-
-	Window.Destroy;
-	Text_IO.Put_Line ("Window initialised (post-destroy): " & Window.Is_Initialised'Img);
-
-	Context.Shut_Down;
-
-
-
-end Main_Glfw;
+end Hint_Scenario_Specified_Platform;

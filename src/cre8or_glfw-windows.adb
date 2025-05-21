@@ -111,7 +111,7 @@ package body Cre8or_Glfw.Windows is
 	is separate;
 
 	-----------------------------------------------------------------------------------------------------------------
-	not overriding procedure Show (This : in T_Window) is
+	not overriding procedure Show (This : in out T_Window) is
 	begin
 
 		if This.m_Raw = C_Null_Address then
@@ -124,7 +124,7 @@ package body Cre8or_Glfw.Windows is
 	end Show;
 
 	-----------------------------------------------------------------------------------------------------------------
-	not overriding procedure Hide (This : in T_Window) is
+	not overriding procedure Hide (This : in out T_Window) is
 	begin
 
 		if This.m_Raw = C_Null_Address then
@@ -137,7 +137,7 @@ package body Cre8or_Glfw.Windows is
 	end Hide;
 
 	-----------------------------------------------------------------------------------------------------------------
-	not overriding procedure Request_Attention (This : in T_Window) is
+	not overriding procedure Request_Attention (This : in out T_Window) is
 	begin
 
 		if This.m_Raw = C_Null_Address then
@@ -150,7 +150,7 @@ package body Cre8or_Glfw.Windows is
 	end Request_Attention;
 
 	-----------------------------------------------------------------------------------------------------------------
-	not overriding procedure Focus (This : in T_Window) is
+	not overriding procedure Focus (This : in out T_Window) is
 	begin
 
 		if This.m_Raw = C_Null_Address then
@@ -161,6 +161,32 @@ package body Cre8or_Glfw.Windows is
 		Raise_Exception_On_Error;
 
 	end Focus;
+
+	-----------------------------------------------------------------------------------------------------------------
+	not overriding procedure Make_Context_Current (This : in out T_Window) is
+	begin
+
+		if This.m_Raw = C_Null_Address then
+			raise EX_NOT_INITIALISED;
+		end if;
+
+		glfwMakeContextCurrent (This.m_Raw);
+		Raise_Exception_On_Error;
+
+	end Make_Context_Current;
+
+	-----------------------------------------------------------------------------------------------------------------
+	not overriding procedure Swap_Buffers (This : in out T_Window) is
+	begin
+
+		if This.m_Raw = C_Null_Address then
+			raise EX_NOT_INITIALISED;
+		end if;
+
+		glfwSwapBuffers (This.m_Raw);
+		Raise_Exception_On_Error;
+
+	end Swap_Buffers;
 
 
 
@@ -292,6 +318,38 @@ package body Cre8or_Glfw.Windows is
 		Raise_Exception_On_Error;
 
 	end Hint_Any_Position;
+
+	-----------------------------------------------------------------------------------------------------------------
+	procedure Hint_Client_API (API : in T_Client_API) is
+
+		Value : constant T_Int32 := (case API is
+			when E_No_API    => C_No_API,
+			when E_OpenGL    => C_OpenGL_API,
+			when E_OpenGL_ES => C_OpenGL_ES_API
+		);
+
+	begin
+
+		glfwWindowHint (E_Client_API, Value);
+		Raise_Exception_On_Error;
+
+	end Hint_Client_API;
+
+	-----------------------------------------------------------------------------------------------------------------
+	procedure Hint_Context_Creation_API (API : in T_Context_Creation_API) is
+
+		Value : constant T_Int32 := (case API is
+			when E_Native_Context => C_Native_Context_API,
+			when E_EGL_Context    => C_EGL_Context_API,
+			when E_OSMesa_Context => C_OSMesa_Context_API
+		);
+
+	begin
+
+		glfwWindowHint (E_Context_Creation_API, Value);
+		Raise_Exception_On_Error;
+
+	end Hint_Context_Creation_API;
 
 	-----------------------------------------------------------------------------------------------------------------
 	procedure Set_Default_Hints is

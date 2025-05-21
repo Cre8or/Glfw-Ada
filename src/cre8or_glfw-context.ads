@@ -41,6 +41,16 @@ package Cre8or_Glfw.Context is
 	procedure Hint_Platform (Platform : in T_Platform);
 
 	---------------------------------------------------------------------------------------------------------------------
+	-- Sends the platform hint to Glfw as specified in the project's scenario windowing system variable.
+	-- Primarily intended for Unix systems where multiple platforms are available, but the application code is to
+	-- remain platform agnostic (and as such doesn't allow for platform hints).
+	--
+	-- Hints are reset after a call to Shut_Down and must be resubmitted before the next call to Initialise.
+	-- Must only be called from the main task.
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Scenario_Specified_Platform;
+
+	---------------------------------------------------------------------------------------------------------------------
 	-- Sets whether Glfw should expose joystick hats as buttons, for compatibility with earlier versions that did not
 	-- have glfwGetJoystickHats.
 	--
@@ -112,6 +122,15 @@ package Cre8or_Glfw.Context is
 	-- Must only be called from the main task.
 	---------------------------------------------------------------------------------------------------------------------
 	procedure Await_Events (Timeout : in Duration);
+
+	---------------------------------------------------------------------------------------------------------------------
+	-- Sets the swap interval for the current OpenGL or OpenGL ES context, i.e. the number of screen updates to wait from
+	-- the time Windows.Swap_Buffers was called before swaping the buffers and returning.
+	-- This is sometimes called Vertical Synchronisation, or VSync.
+	-- Setting the interval to 0 causes buffer swaps to take place immediately when Window.Swap_Buffers is called.
+	-- A context must be current on the calling thread (see Windows.Make_Context_Current).
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Set_Swap_Interval (Interval : in Natural);
 
 
 

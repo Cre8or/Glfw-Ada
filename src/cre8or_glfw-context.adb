@@ -48,6 +48,9 @@ package body Cre8or_Glfw.Context is
 	end Hint_Platform;
 
 	---------------------------------------------------------------------------------------------------------------------
+	procedure Hint_Scenario_Specified_Platform is separate;
+
+	---------------------------------------------------------------------------------------------------------------------
 	procedure Hint_Expose_Joystick_Hat_Buttons (Enabled : in Boolean) is
 	begin
 
@@ -131,6 +134,7 @@ package body Cre8or_Glfw.Context is
 	begin
 
 		glfwWaitEvents;
+		Raise_Exception_On_Error;
 
 	end Await_Events;
 
@@ -139,8 +143,18 @@ package body Cre8or_Glfw.Context is
 	begin
 
 		glfwWaitEventsTimeout (T_Double (Timeout));
+		Raise_Exception_On_Error;
 
 	end Await_Events;
+
+	---------------------------------------------------------------------------------------------------------------------
+	procedure Set_Swap_Interval (Interval : in Natural) is
+	begin
+
+		glfwSwapInterval (T_Int (Interval));
+		Raise_Exception_On_Error;
+
+	end Set_Swap_Interval;
 
 
 
